@@ -38,11 +38,12 @@ const AudioPlayer = ({tracks}) => {
         }
     }
 
-    //Play Pause Functionality
+    //Play Pause Functionality Effects-----------------
     //Tracks playing
     useEffect(()=>{
         if (isPlaying){
             audioRef.current.play()
+            startTimer()
         } else {
             audioRef.current.pause()
         }
@@ -57,6 +58,7 @@ const AudioPlayer = ({tracks}) => {
         if (isReady.current){
             audioRef.current.play();
             setIsPlaying(true);
+            startTimer()
         } else {
             isReady.current = true;
         }
@@ -68,6 +70,19 @@ const AudioPlayer = ({tracks}) => {
             clearInterval(intervalRef.current)
         }
     },[])
+
+    //Timer Functionality checking for song ending--------------
+    const startTimer = () => {
+        clearInterval(intervalRef.current);
+
+        intervalRef.current = setInterval(()=> {
+            if (audioRef.current.ended){
+                nextTrack()
+            } else {
+                setTrackProgress(audioRef.current.currentTime)
+            }
+        },[1000])
+    }
     
     return (
         <div className='player'>
