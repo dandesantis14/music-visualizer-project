@@ -22,11 +22,12 @@ const AudioPlayer = ({tracks}) => {
     const playedPercentage = duration ? `${(trackProgress/duration) * 100}%` : "0%"
 
     //? Need function to handle play pause
-
+    const onPlayPause = () => {}
     //? Need function to handle track skipping
-
+    const nextTrack = () => {}
     //? Need function to handle scrubbiung
-
+    const prevTrack = () => {}
+    
     return (
         <div className='player'>
             <div className='trackInfo'>
