@@ -39,6 +39,7 @@ const AudioPlayer = ({tracks}) => {
     }
 
     //Play Pause Functionality
+    //Tracks playing
     useEffect(()=>{
         if (isPlaying){
             audioRef.current.play()
@@ -46,7 +47,28 @@ const AudioPlayer = ({tracks}) => {
             audioRef.current.pause()
         }
     },[isPlaying])
-
+    //Tracks song index
+    useEffect(()=>{
+        audioRef.current.pause()
+        
+        audioRef.current = new Audio(audioSource)
+        setTrackProgress(audioRef.current.currentTime)
+        
+        if (isReady.current){
+            audioRef.current.play();
+            setIsPlaying(true);
+        } else {
+            isReady.current = true;
+        }
+    },[trackIndex])
+    //Clean up after dismount
+    useEffect(()=>{
+        return () => {
+            audioRef.current.pause()
+            clearInterval(intervalRef.current)
+        }
+    },[])
+    
     return (
         <div className='player'>
             <div className='trackInfo'>
