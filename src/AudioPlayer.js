@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
+import Controls from './Controls';
 
 
 const AudioPlayer = ({tracks}) => {
@@ -21,19 +22,43 @@ const AudioPlayer = ({tracks}) => {
     //Value to determine track progress
     const playedPercentage = duration ? `${(trackProgress/duration) * 100}%` : "0%"
 
-    //? Need function to handle play pause
-    const onPlayPause = () => {}
-    //? Need function to handle track skipping
-    const nextTrack = () => {}
-    //? Need function to handle scrubbiung
-    const prevTrack = () => {}
-    
+    //Control functionality
+    const nextTrack = () => {
+        if (trackIndex < tracks.length - 1){
+            setTrackIndex(trackIndex+1)
+        } else {
+            setTrackIndex(0)
+        }
+    } 
+    const prevTrack = () => {
+        if (trackIndex - 1 < 0){
+            setTrackIndex(tracks.length-1)
+        } else {
+            setTrackIndex(trackIndex-1)
+        }
+    }
+
+    //Play Pause Functionality
+    useEffect(()=>{
+        if (isPlaying){
+            audioRef.current.play()
+        } else {
+            audioRef.current.pause()
+        }
+    },[isPlaying])
+
     return (
         <div className='player'>
             <div className='trackInfo'>
                 <h3 className='trackTitle'>{title}</h3>
                 <h4 className='trackArtist'>{artist}</h4>
             </div>
+            <Controls 
+                isPlaying={isPlaying}
+                onPrevClick={prevTrack}
+                onNextClick={nextTrack}
+                onPlayPauseClick={setIsPlaying}
+            />
         </div>
     );
 }
